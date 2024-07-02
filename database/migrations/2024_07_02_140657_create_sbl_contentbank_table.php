@@ -14,12 +14,18 @@ class CreateSblContentbankTable extends Migration
     public function up()
     {
         Schema::create('sbl_contentbank', function (Blueprint $table) {
-            $table->integer('Id')->primary();
-            $table->integer('BookId')->unsigned();
-            $table->enum('state', ['Normal', 'Perdido', 'Dañado'])->default('Normal');
-            $table->foreign('BookId')->references('Id')->on('sbl_books');
-            $table->engine = 'InnoDB';
-            $table->charset = 'utf8mb4';
+            // Identificador de CONTENIDO DE BANCO
+            $table->id(); // AUTO_INCREMENT y PRIMARY KEY
+            // Llave foránea para identificar libro
+            $table->unsignedBigInteger('BookId');
+            // Estado del LIBRO
+            $table->enum('state', ['Normal', 'Perdido', 'Dañado'])->default('Normal')->charset('utf8mb4');
+
+            // Timestamps
+            $table->timestamps();
+
+            // Llave foránea
+            $table->foreign('BookId')->references('Id')->on('sbl_books')->onDelete('cascade');
         });
     }
 
